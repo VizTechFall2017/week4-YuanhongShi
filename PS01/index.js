@@ -20,7 +20,7 @@ svg.append('rect')
     .attr('height', 700)
     .attr('fill', 'url(#bg)');
 
-
+//define the line function
 var lineFunction = d3.line()
     //.interpolate('cardinal')
     .x(function(d){
@@ -30,12 +30,19 @@ var lineFunction = d3.line()
         return d.y;
     });
 
+var currentColor = 'black';
+var allData;
+var dataColor;
+
 
 d3.csv('./PathData.csv', function(dataIn){
+    allData = dataIn;
+    dataColor = allData.filter(function(d){
+        return d.fill == 'black';
+    });
 
-
+//add single path to the dots
     var path = svg.append('path')
-
         .datum(dataIn)
         .attr('class', 'line')
         .attr('stroke','steelblue')
@@ -44,7 +51,8 @@ d3.csv('./PathData.csv', function(dataIn){
         .attr('fill', 'none');
 
 
-    svg.selectAll('circle')
+//draw the dots on the different positions
+    /*svg.selectAll('circle')
         .data(dataIn)
         .enter()
         .append('circle')
@@ -61,8 +69,58 @@ d3.csv('./PathData.csv', function(dataIn){
             //console.log(d.fill);
             return d.fill;
 
-        });
+        });*/
+    svg.selectAll('circle')
+        .data(dataColor)
+        .enter()
+        .append('circle')
+        .attr('class','myCircles');
+
+    updateData(dataColor);
+
+
 });
+
+
+function buttonClicked(){
+    if (currentColor === 'black'){
+        dataColor= allData.filter(function(d){
+            return d.fill == 'gray';
+
+        });
+        updateData(dataColor);
+        currentColor = 'gray';
+    }
+    else if (currentColor === 'gray'){
+        dataColor= allData.filter(function(d){
+            return d.fill == 'black';
+
+        });
+        updateData(dataColor);
+        currentColor = 'black';
+    }
+
+}
+
+function updateData(dataPoints) {
+
+    console.log(dataPoints);
+    svg.selectAll('.myCircles')
+        .data(dataPoints)
+        .attr('cx',function(d){
+            return d.x;
+        })
+        .attr('cy', function(d){
+            return d.y;
+        })
+        .attr('r', function(d){
+            return d.r * Math.random() * 2;
+        })
+        .attr('fill', function(d){
+            return d.fill;
+        })
+
+}
 
 
 
