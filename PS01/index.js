@@ -13,7 +13,7 @@ defs.append('pattern')
     .attr('x', 0)
     .attr('y', 0);
 
-console.log('here');
+
 
 svg.append('rect')
     .attr('width', 1250)
@@ -21,7 +21,29 @@ svg.append('rect')
     .attr('fill', 'url(#bg)');
 
 
+var lineFunction = d3.line()
+    //.interpolate('cardinal')
+    .x(function(d){
+        return d.x;
+    })
+    .y(function(d){
+        return d.y;
+    });
+
+
 d3.csv('./PathData.csv', function(dataIn){
+
+
+    var path = svg.append('path')
+
+        .datum(dataIn)
+        .attr('class', 'line')
+        .attr('stroke','steelblue')
+        .attr('stroke-width', 2)
+        .attr('d', lineFunction)
+        .attr('fill', 'none');
+
+
     svg.selectAll('circle')
         .data(dataIn)
         .enter()
@@ -36,9 +58,11 @@ d3.csv('./PathData.csv', function(dataIn){
             return d.r;
         })
         .attr('fill', function(d){
-            console.log(d.fill);
+            //console.log(d.fill);
             return d.fill;
 
-        })
-
+        });
 });
+
+
+
