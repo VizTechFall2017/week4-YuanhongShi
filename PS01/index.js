@@ -46,7 +46,7 @@ d3.csv('./PathData.csv', function(dataIn){
         .datum(dataIn)
         .attr('class', 'line')
         .attr('stroke','steelblue')
-        .attr('stroke-width', 2)
+        .attr('stroke-width', 3)
         .attr('d', lineFunction)
         .attr('fill', 'none');
 
@@ -84,15 +84,16 @@ d3.csv('./PathData.csv', function(dataIn){
 
 function buttonClicked(){
     if (currentColor === 'black'){
-        dataColor= allData.filter(function(d){
+        dataColor = allData.filter(function(d){
+            console.log(dataColor);
             return d.fill == 'gray';
 
         });
         updateData(dataColor);
         currentColor = 'gray';
     }
-    else if (currentColor === 'gray'){
-        dataColor= allData.filter(function(d){
+    else{
+        dataColor = allData.filter(function(d){
             return d.fill == 'black';
 
         });
@@ -114,7 +115,7 @@ function updateData(dataPoints) {
             return d.y;
         })
         .attr('r', function(d){
-            return d.r * Math.random() * 2;
+            return d.r * Math.random() * 1.5;
         })
         .attr('fill', function(d){
             return d.fill;
